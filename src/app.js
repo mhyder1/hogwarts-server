@@ -5,6 +5,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 
+const PORT = 8000;
+
 const app = express();
 
 const morganOption = (NODE_ENV === 'production')
@@ -15,9 +17,25 @@ app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
 
+
 app.get('/', (req, res) => {
-  res.send('It\'s working :\'--)!');
+  res.send('This server is functioning correctly.');
 });
+
+app.get('/echo', (req, res) => {
+  const responseText = `Here are some details of your request:
+    Base URL: ${req.baseUrl}
+    Host: ${req.hostname}
+    Path: ${req.path}
+  `;
+  res.send(responseText);
+});
+
+app.get('/hello', (req, res) => {
+  res.status(500).send('Oops! This is wrong.')
+});
+
+
 
 app.use(function errorHandler(error, req, res, next) {
   let response
