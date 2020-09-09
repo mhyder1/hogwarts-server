@@ -4,7 +4,8 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
-const studentRouter = require('./students/student-router')
+
+const PORT = 8000;
 
 const app = express();
 
@@ -16,25 +17,23 @@ app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
 
-app.use('/students', studentRouter)
 
+app.get('/', (req, res) => {
+  res.send('This server is functioning correctly.');
+});
 
-// app.get('/', (req, res) => {
-//   res.send('This server is functioning correctly.');
-// });
+app.get('/echo', (req, res) => {
+  const responseText = `Here are some details of your request:
+    Base URL: ${req.baseUrl}
+    Host: ${req.hostname}
+    Path: ${req.path}
+  `;
+  res.send(responseText);
+});
 
-// app.get('/echo', (req, res) => {
-//   const responseText = `Here are some details of your request:
-//     Base URL: ${req.baseUrl}
-//     Host: ${req.hostname}
-//     Path: ${req.path}
-//   `;
-//   res.send(responseText);
-// });
-
-// app.get('/hello', (req, res) => {
-//   res.status(500).send('Oops! This is wrong.')
-// });
+app.get('/hello', (req, res) => {
+  res.status(500).send('Oops! This is wrong.')
+});
 
 
 

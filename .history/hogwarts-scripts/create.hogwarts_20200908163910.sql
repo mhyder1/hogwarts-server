@@ -5,5 +5,4 @@ CREATE TABLE students (
     wandType TEXT NOT NULL
     wandCore TEXT NOT NULL
     favoriteSubject TEXT NOT NULL
-    house TEXT NOT NULL
 );
