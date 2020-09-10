@@ -6,6 +6,11 @@ const path = require('path');
 const studentRouter = express.Router();
 const jsonParser = express.json();
 
+
+const serializeStudent = (student) => ({
+    id: String(student.id)
+  });
+
 studentRouter 
     .route('/')
     .get((req, res, next) => {
@@ -28,7 +33,9 @@ studentRouter
             house
         } = req.body;
         
+        const id = uuid();
         const newStudent = { 
+            id,
             pronouns,
             pet,
             wandtype: wandType,
@@ -36,8 +43,7 @@ studentRouter
             favoritesubject: favoriteSubject,
             house
         };
-
-        
+    
         console.log(newStudent)
 
         for (const [key, value] of Object.entries(newStudent)) {
@@ -59,71 +65,60 @@ studentRouter
                 .json(student);
         })
         .catch(next);
+    });
+    
+studentRouter
+    .route('/:student_id')
+    .all((req, res, next) => {
+        StudentService.getById (
+            req.app.get('db'),
+            req.params.student_id
+        )
+            .then(student => {
+                if (!student) {
+                    return res.status(404).json({
+                        error: {message: `Student does not exist.`}
+                    });
+                }
+                res.student = student;
+                next();
+            })
+            .catch(next);
     })
-        .delete((req, res, next) => {
+    .get((req, res, next) => {
+        res.json(serializeStudent(res.student));
+    })
+    .delete((req, res, next) => {
         StudentService.removeStudent(
             req.app.get('db'),
-            req.params.studentId
+            req.params.student_id
         )
             .then(() => {
                 res.status(204).end();
             })
             .catch(next);
     })
+    .patch(jsonParser, (req, res, next) => {
+        const {student_id} = req.body;
+        const studentToUpdate = {student_id};
 
-// studentRouter
-//     .route('/:folder_id')
-//     .all((req, res, next) => {
-//         console.log('hello world');
-//         StudentService.getById (
-//             req.app.get('db'),
-//             req.params.folder_id
-//         )
-//             .then(folder => {
-//                 if (!folder) {
-//                     return res.status(404).json({
-//                         error: {message: `Folder does not exist.`}
-//                     });
-//                 }
-//                 res.folder = folder;
-//                 next();
-//             })
-//             .catch(next);
-//     })
-//     .get((req, res, next) => {
-//         res.json(serializeFolder(res.folder));
-//     })
-//     .delete((req, res, next) => {
-//         StudentService.deleteFolder(
-//             req.app.get('db'),
-//             req.params.folder_id
-//         )
-//             .then(() => {
-//                 res.status(204).end();
-//             })
-//             .catch(next);
-//     })
-//     .patch(jsonParser, (req, res, next) => {
-//         const {folder_name} = req.body;
-//         const folderToUpdate = {folder_name};
+        const numberOfValues = Object.values(studentToUpdate).filter(Boolean).length;
 
-//         const numberOfValues = Object.values(folderToUpdate).filter(Boolean).length;
+        if (numberOfValues === 0) {
+            return res.status(400).json({
+                error: {message: `Request body must contain a 'name.'`}
+            });
+        }
 
-//         if (numberOfValues === 0) {
-//             return res.status(400).json({
-//                 error: {message: `Request body must contain a 'name.'`}
-//             });
-//         }
-
-//         StudentService.updateFolder(
-//             req.app.patch.get('db'),
-//             req.params.folder_id,
-//             folderToUpdate
-//         )
-//             .then(numRowsAffected => {
-//                 res.status(204).end();
-//             })
-//             .catch(next);
-//     });
+        StudentService.updateStudent(
+            req.app.patch.get('db'),
+            req.params.student_id,
+            studentToUpdate
+        )
+            .then(numRowsAffected => {
+                res.status(204).end();
+            })
+            .catch(next);
+    });
 
 module.exports = studentRouter;

@@ -11,24 +11,24 @@ const StudentService = {
           return rows[0]
         })
     },
-    removeStudent(knex, newStudent){
+    removeStudent(knex, id){
       return knex('students')
         .where({id})
         .delete()
     },
-    // getById(knex, id) {
-    //   return knex.from('folders').select('*').where('id', id).first()
-    // },
+    getById(knex, id) {
+      return knex.from('students').select('*').where('id', id).first()
+    },
     // deleteFolder(knex, id) {
     //   return knex('folders')
     //     .where({ id })
     //     .delete()
     // },
-    // updateFolder(knex, id, newStudentFields) {
-    //   return knex('folders')
-    //     .where({ id })
-    //     .update(newStudentFields)
-    // },
+    updateFolder(knex, id, newStudent) {
+      return knex('students')
+        .where({ id })
+        .update(newStudent)
+    },
   }
   
   module.exports = StudentService
