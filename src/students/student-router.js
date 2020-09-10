@@ -59,7 +59,17 @@ studentRouter
                 .json(student);
         })
         .catch(next);
-    });
+    })
+        .delete((req, res, next) => {
+        StudentService.removeStudent(
+            req.app.get('db'),
+            req.params.studentId
+        )
+            .then(() => {
+                res.status(204).end();
+            })
+            .catch(next);
+    })
 
 // studentRouter
 //     .route('/:folder_id')
