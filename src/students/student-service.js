@@ -11,6 +11,11 @@ const StudentService = {
           return rows[0]
         })
     },
+    removeStudent(knex, newStudent){
+      return knex('students')
+        .where({id})
+        .delete()
+    },
     // getById(knex, id) {
     //   return knex.from('folders').select('*').where('id', id).first()
     // },
