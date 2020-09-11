@@ -6,11 +6,6 @@ const path = require('path');
 const studentRouter = express.Router();
 const jsonParser = express.json();
 
-
-const serializeStudent = (student) => ({
-    id: String(student.id)
-  });
-
 studentRouter 
     .route('/')
     .get((req, res, next) => {
@@ -20,7 +15,7 @@ studentRouter
       .then(students => {
         res.json(students);
       })
-            .catch(next);
+        .catch(next);
     }) 
     .post(jsonParser, (req, res, next) => {
         console.log(req.body)
@@ -33,9 +28,7 @@ studentRouter
             house
         } = req.body;
         
-        const id = uuid();
         const newStudent = { 
-            id,
             pronouns,
             pet,
             wandtype: wandType,
@@ -43,8 +36,6 @@ studentRouter
             favoritesubject: favoriteSubject,
             house
         };
-    
-        console.log(newStudent)
 
         for (const [key, value] of Object.entries(newStudent)) {
             if (value == null) {
@@ -66,7 +57,7 @@ studentRouter
         })
         .catch(next);
     });
-    
+
 studentRouter
     .route('/:student_id')
     .all((req, res, next) => {
@@ -74,51 +65,51 @@ studentRouter
             req.app.get('db'),
             req.params.student_id
         )
-            .then(student => {
-                if (!student) {
-                    return res.status(404).json({
-                        error: {message: `Student does not exist.`}
-                    });
-                }
-                res.student = student;
-                next();
-            })
-            .catch(next);
+        .then(student => {
+            if (!student) {
+                return res.status(404).json({
+                    error: {message: `student does not exist.`}
+                });
+            }
+            res.student = student;
+            next();
+        })
+        .catch(next);
     })
     .get((req, res, next) => {
-        res.json(serializeStudent(res.student));
+        res.json(res.student);
     })
     .delete((req, res, next) => {
-        StudentService.removeStudent(
+        StudentService.deleteStudent(
             req.app.get('db'),
             req.params.student_id
         )
-            .then(() => {
-                res.status(204).end();
-            })
-            .catch(next);
+        .then(() => {
+            res.status(204).end();
+        })
+        .catch(next);
     })
-    .patch(jsonParser, (req, res, next) => {
-        const {student_id} = req.body;
-        const studentToUpdate = {student_id};
+//     .patch(jsonParser, (req, res, next) => {
+//         const {folder_name} = req.body;
+//         const folderToUpdate = {folder_name};
 
-        const numberOfValues = Object.values(studentToUpdate).filter(Boolean).length;
+//         const numberOfValues = Object.values(folderToUpdate).filter(Boolean).length;
 
-        if (numberOfValues === 0) {
-            return res.status(400).json({
-                error: {message: `Request body must contain a 'name.'`}
-            });
-        }
+//         if (numberOfValues === 0) {
+//             return res.status(400).json({
+//                 error: {message: `Request body must contain a 'name.'`}
+//             });
+//         }
 
-        StudentService.updateStudent(
-            req.app.patch.get('db'),
-            req.params.student_id,
-            studentToUpdate
-        )
-            .then(numRowsAffected => {
-                res.status(204).end();
-            })
-            .catch(next);
-    });
+//         StudentService.updateFolder(
+//             req.app.patch.get('db'),
+//             req.params.student_id,
+//             folderToUpdate
+//         )
+//             .then(numRowsAffected => {
+//                 res.status(204).end();
+//             })
+//             .catch(next);
+//     });
 
 module.exports = studentRouter;

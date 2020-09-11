@@ -16,16 +16,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "eslint": "^7.6.0",
     "express": "^4.17.1",
     "helmet": "^4.0.0",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.5",
     "migrate": "^1.7.0",
     "morgan": "^1.10.0",
     "pg": "^7.x.x",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "xss": "^1.0.8"
   },
   "devDependencies": {
     "chai": "^4.2.0",
