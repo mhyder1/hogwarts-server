@@ -1,26 +1,28 @@
-# Express Boilerplate!
+Create a Hogwarts Student
 
-This is a boilerplate project used for starting new projects!
+Link to live app: https://hogwarts-client.vercel.app/
 
-## Set up
+API Documentation:
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+This app allows a user to make selections to create a Hogwarts student, including selecting preferred pronouns, a pet, a wand type, a wand core, and a favorite magical Hogwarts school subject. 
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+Landing Page screenshot:
+https://imgur.com/HNWUZoX
 
-## Scripts
+After reading the landing page, the user clicks the 'HERE' button and is redirected to the Create Page, where they will choose input in a form to create their Hogwarts student. 
 
-Start the application `npm start`
+Create Page screenshot:
+https://imgur.com/2QDp7xh
 
-Start nodemon for the application `npm run dev`
+After creating a student, the student will populate on the My Students Page, along with all other students that are created. The user will also be able to delete students if they choose to. 
 
-Run the tests `npm test`
 
-## Deploying
+My Students Page screenshot:
+https://imgur.com/V7ZcaLc
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+
+Technology Used:
+
+Front End: JavaScript, React, HTML5, CSS3
+
+Back End: Node.js, Express, PostgresSQL, Mocha & Chai, REST APIs 3
