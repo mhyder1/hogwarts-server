@@ -1,6 +1,7 @@
 const app = require('../src/app')
 const { expect } = require('chai');
 const supertest = require('supertest');
+const knex = require('knex');
 const StudentService = require('../src/students/student-service');
 
 
@@ -39,7 +40,7 @@ describe('Students service object', () => {
   before('setup db', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DB_URL,
+      connection: process.env.TEST_DATABASE_URL || 'postgresql://hogwarts\@localhost/headmaster-test'
     });
   });
 
