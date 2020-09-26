@@ -25,7 +25,8 @@ studentRouter
             wandType,
             wandCore,
             favoriteSubject,
-            house
+            house,
+            user_id
         } = req.body;
         
         const newStudent = { 
@@ -34,7 +35,8 @@ studentRouter
             wandtype: wandType,
             wandcore: wandCore,
             favoritesubject: favoriteSubject,
-            house
+            house,
+            user_id
         };
 
         for (const [key, value] of Object.entries(newStudent)) {
@@ -57,6 +59,19 @@ studentRouter
         })
         .catch(next);
     });
+
+studentRouter
+    .route('/users/:user_id')
+    .get((req, res, next) => {
+    StudentService.getStudentsByUserId(
+        req.app.get('db'),
+        req.params.user_id
+      )
+        .then(students => {
+          res.json(students)
+        })
+        .catch(next)
+    })
 
 studentRouter
     .route('/:student_id')

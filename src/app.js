@@ -5,6 +5,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
 const studentRouter = require('./students/student-router')
+const authRouter = require('./auth/auth-router')
+const usersRouter = require('./users/users-router')
 
 
 const app = express();
@@ -17,7 +19,9 @@ app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
 
-app.use('/students', studentRouter)
+app.use('/api/students', studentRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/users', usersRouter)
 
 
 
